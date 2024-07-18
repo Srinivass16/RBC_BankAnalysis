@@ -1,0 +1,39 @@
+Date table was created 
+DateMaster = CALENDAR(FIRSTDATE(Bank_Churn[Bank DOJ]),LASTDATE(Bank_Churn[Bank DOJ]))
+
+year = YEAR(DateMaster[Date])
+Month = MONTH(DateMaster[Date])
+Month name = FORMAT(DateMaster[Date],"MMM")
+
+
+-------------------------------------------------------------------------------------------
+
+DAX MEASURES
+-------------
+
+Active Customer = CALCULATE(COUNT(Bank_Churn[CustomerId]),ActiveCustomer[ActiveCategory]="Active Member")
+
+Toatal Customer = COUNT(Bank_Churn[CustomerId])
+
+Inactive Customer = [Total Customer] - [Active Customer]
+
+Credit card holder = CALCULATE(COUNT(Bank_Churn[CustomerId]),CreditCard[Category]="cedit card holder")
+
+Non credit card holder = CALCULATE(COUNT(Bank_Churn[CustomerId]),CreditCard[Category]="non credit card holder")
+
+Exit Customer = CALCULATE([Total Customer],ExitCustomer[ExitCategory]="Exit")
+
+previous month exit custome = CALCULATE([Exit Customer],PREVIOUSMONTH(DateMaster[Date]))
+
+-----------------------------------------------------------------------------------------------
+
+Credit type = SWITCH(TRUE(),Bank_Churn[CreditScore]>=800 && Bank_Churn[CreditScore]<=850 ,"Excellent" ,
+Bank_Churn[CreditScore]>=740 && Bank_Churn[CreditScore]<=799 , "Very good" ,
+Bank_Churn[CreditScore]>=670 && Bank_Churn[CreditScore]<=739 , "good" ,
+Bank_Churn[CreditScore]>=580 && Bank_Churn[CreditScore]<=669 ,"Fair" ,
+Bank_Churn[CreditScore]>=300 && Bank_Churn[CreditScore]<=579 ,"poor"
+)
+
+
+https://app.powerbi.com/Redirect?action=OpenApp&appId=0120bb79-a3f1-4708-9c8c-69fcdabbe844&ctid=712d7553-2038-4dae-ac24-abc98ae7cb00
+
